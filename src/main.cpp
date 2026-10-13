@@ -1,9 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cmath>
+
+constexpr float PI = 3.14159265f;
+constexpr unsigned int WINDOW_WIDTH = 1024;
+constexpr unsigned int WINDOW_HEIGHT = 768;
 
 int main() {
     // 1. Create the window
-    sf::RenderWindow window(sf::VideoMode(1024, 768), "Asteroids - Phase 1: Game Loop & Windowing");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Asteroids - Phase 1: Game Loop & Windowing");
     window.setVerticalSyncEnabled(true);
 
     // 2. Setup fixed timestep timing (Key Learning 1)
@@ -20,9 +25,13 @@ int main() {
     ship.setFillColor(sf::Color::Transparent);
     ship.setOutlineColor(sf::Color::White);
     ship.setOutlineThickness(2.f);
-    ship.setPosition(512.f, 384.f);
+    ship.setPosition(WINDOW_WIDTH / 2.f, WINDOW_HEIGHT / 2.f);
 
     float rotationSpeed = 200.f; // degrees per second
+    float acceleration = 200.f;
+    float drag_coefficient = 0.99f;
+    
+    sf::Vector2f velocity(0.f, 0.f);
 
     // Main Game Loop
     while (window.isOpen()) {
@@ -54,6 +63,28 @@ int main() {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
                 ship.rotate(rotationSpeed * dtSeconds);
             }
+
+            float radians = ship.getRotation() * (PI / 180.f);
+            float dirX = std::sin(radians);
+            float dirY = -std::cos(radians);
+            sf::Vector2f direction(dirX, dirY);
+            
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+                velocity += direction * acceleration * dtSeconds;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+                velocity -= direction * acceleration * dtSeconds;
+            }
+
+            velocity *= drag_coefficient;
+            ship.move(velocity * dtSeconds);
+
+            sf::Vector2f pos = ship.getPosition();
+            if (pos.x < 0.f) pos.x = static_cast<float>(WINDOW_WIDTH);
+            if (pos.x > WINDOW_WIDTH) pos.x = 0.f;
+            if (pos.y < 0.f) pos.y = static_cast<float>(WINDOW_HEIGHT);
+            if (pos.y > WINDOW_HEIGHT) pos.y = 0.f;
+            ship.setPosition(pos);
         }
 
         // --- 3. Render Phase ---
