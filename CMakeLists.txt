@@ -21,6 +21,8 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(Asteroids
     src/main.cpp
+    src/Game.cpp
+    src/Ship.cpp
 )
 
 target_link_libraries(Asteroids PRIVATE
