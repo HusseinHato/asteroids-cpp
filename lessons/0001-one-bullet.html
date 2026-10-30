@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Lesson 1 — One bullet</title><link rel="stylesheet" href="../assets/lessons.css"></head>
+<body><p class="eyebrow">Asteroids / C++ / Lesson 01</p><h1>Give one bullet a shape</h1>
+<p>Your win: draw one stationary white dot using your own Bullet class. Movement and shooting come later. Keep Ship open as a worked example.</p>
+<nav><a href="../reference/cpp-basics.html">C++ glossary</a></nav>
+<h2>1. Understand the pieces</h2>
+<p>A <strong>class</strong> describes a type; an <strong>object</strong> is one instance. Ship is a class; Game's m_ship is an object. Each Bullet object will contain its own shape, velocity, and lifetime.</p>
+<p>The header describes what callers can use. The source file contains function bodies. A constructor runs when an object is created; it has no return type.</p>
+<pre><code>Bullet::Bullet(sf::Vector2f position, sf::Vector2f velocity)
+    : m_velocity(velocity) {
+    // Set up the shape and starting position here.
+}</code></pre>
+<p><code>Bullet::</code> says this definition belongs to Bullet. The two parameters are input values. <code>: m_velocity(velocity)</code> initializes the member from the parameter before entering the body. The m_ prefix is this project's naming convention, not C++ syntax.</p>
+<p>Like Ship, inherit from <code>sf::Drawable</code> to support <code>window.draw(bullet)</code> and <code>sf::Transformable</code> to get position methods. Your private drawing override tells SFML how to draw the circle. <code>override</code> lets the compiler catch a mismatched signature. See <a href="https://www.sfml-dev.org/documentation/2.6.2/classsf_1_1Drawable.html">the SFML Drawable reference</a>.</p>
+<h2>2. Predict before coding</h2>
+<p>A radius-3 circle has local bounds from 0 to 6 on each axis. What origin would make its position refer to its center?</p>
+<details><summary>Check your prediction</summary><p>(3, 3). Setting the origin there makes the shape centered on the bullet's position. With the default origin, that position refers to the upper-left corner of its local bounds.</p></details>
+<h2>3. Your code</h2>
+<ol>
+<li>Create <code>src/Bullet.hpp</code>. Use <code>#pragma once</code>, include SFML graphics, and declare Bullet with the same two base classes as Ship.</li>
+<li>Declare a public constructor taking position and velocity, both <code>sf::Vector2f</code>. Declare <code>void update(sf::Time dt);</code> and <code>bool isExpired() const;</code>. We will define those two methods in lesson 2; do not call them yet.</li>
+<li>Add private members: <code>sf::CircleShape m_shape;</code>, <code>sf::Vector2f m_velocity;</code>, and <code>sf::Time m_remainingLifetime{sf::seconds(1.f)};</code>. The braces initialize the lifetime. Add the same private draw declaration as Ship.</li>
+<li>Add <code>constexpr float BULLET_RADIUS = 3.f;</code> inside Config. In <code>src/Bullet.cpp</code>, include Bullet.hpp and Config.hpp. Define the constructor: initialize velocity, set the circle's radius, set its origin to (radius, radius), set its fill to white, and set the Bullet object's position from the position parameter.</li>
+<li>Define the drawing override following Ship: combine <code>states.transform</code> with <code>getTransform()</code>, then draw m_shape with those states. This applies the Bullet's position to the circle; do not also set the circle's position to the world position.</li>
+<li>Add <code>src/Bullet.cpp</code> to the existing CMake executable source list.</li>
+<li>For this temporary checkpoint, include Bullet.hpp in Game.hpp and add <code>Bullet m_bullet{{200.f, 200.f}, {0.f, 0.f}};</code> beside m_ship. These two pairs supply position and velocity to the constructor. Draw m_bullet inside Game::render, after the ship and before display.</li>
+</ol>
+<p>The lifetime literal becomes a Config constant when we implement lifetime behavior. This temporary single bullet will be replaced by the collection in lesson 3.</p>
+<h2>4. Build and inspect</h2>
+<p>From the repository root, using the existing configured build:</p>
+<pre><code>cmake --build build
+.\build\Asteroids.exe</code></pre>
+<p>Expected: the ship still moves and a small white dot stays centered at (200, 200). Do not call Bullet::update yet. Declaring a non-virtual method without defining it is fine until it is used.</p>
+<details><summary>If it fails, use the error as a clue</summary><ul>
+<li>“Undefined reference” to the constructor: check the source was added to CMake and that the definition matches the declaration.</li>
+<li>“Abstract type”: check your draw signature against Ship, including the trailing const.</li>
+<li>Dot at the top-left: check setPosition and the transform combination in draw.</li>
+<li>No dot: check radius, fill color, and that drawing happens between clear and display.</li>
+</ul></details>
+<h2>5. Review together</h2>
+<p>Tell me when your attempt is ready; I can read the files directly. Explain why the constructor has no return type and why draw can be const while drawing into the window. Ask me about any unclear line; you do not need to solve compiler errors alone.</p>
+<p>Primary reading: <a href="https://learn.microsoft.com/en-us/cpp/cpp/constructors-cpp?view=msvc-170">Microsoft's C++ constructor guide</a>, especially member initialization. Next lesson, after review: move this bullet and measure its lifetime.</p>
+</body></html>

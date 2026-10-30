@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>C++ game glossary</title><link rel="stylesheet" href="../assets/lessons.css"></head>
+<body><nav><a href="../lessons/0001-one-bullet.html">Lesson 1</a></nav><h1>C++ game glossary</h1>
+<dl>
+<dt>Class / object</dt><dd>A class defines a type. An object is an instance of that type, with its own state.</dd>
+<dt>Declaration / definition</dt><dd>A declaration introduces a name and its type. A function definition supplies its body. Our headers declare interfaces; source files define functions.</dd>
+<dt>Constructor</dt><dd>Initializes a new object. It has the class name and no return type. An initializer list after a colon initializes members before the body runs.</dd>
+<dt>Member</dt><dd>A variable or function belonging to a class. Each bullet has its own velocity and shape.</dd>
+<dt>public / private</dt><dd>Public members are accessible to callers; private members are accessible to the class itself and its friends.</dd>
+<dt>const member function</dt><dd>A trailing const makes this object read-only through that function, apart from special mutable members. It can still draw into a separate render target.</dd>
+<dt>Reference (&amp;)</dt><dd>An alias for an existing object. A render-target reference lets drawing use the actual target instead of a copy.</dd>
+<dt>override</dt><dd>Asks the compiler to check that this function replaces a virtual function declared in a base class.</dd>
+<dt>sf::Vector2f</dt><dd>A pair of floats, x and y. Its meaning depends on usage: a position in pixels or velocity in pixels per second.</dd>
+</dl><p>Sources: <a href="https://learn.microsoft.com/en-us/cpp/cpp/constructors-cpp?view=msvc-170">C++ constructors</a>, <a href="https://www.sfml-dev.org/documentation/2.6.2/classsf_1_1Drawable.html">SFML Drawable</a>.</p></body></html>

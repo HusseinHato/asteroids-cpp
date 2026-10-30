@@ -1,0 +1,11 @@
+:root { color-scheme: light; font-family: Georgia, serif; color: #202b35; background: #f6f4ef; }
+body { max-width: 760px; margin: 48px auto; padding: 0 24px 60px; line-height: 1.65; }
+h1,h2,h3,nav,.eyebrow { font-family: system-ui, sans-serif; line-height: 1.25; }
+h1 { font-size: 2.4rem; } h2 { margin-top: 2rem; }
+.eyebrow { color: #506b70; text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; }
+a { color: #006b78; } code { font-size: .92em; }
+pre { padding: 18px; background: #e9eeef; overflow-x: auto; line-height: 1.5; }
+details { border-left: 3px solid #63858a; padding: 10px 18px; margin: 18px 0; }
+summary { cursor: pointer; font-family: system-ui, sans-serif; }
+li { margin: .5rem 0; } dt { font-weight: bold; margin-top: 1rem; } dd { margin-left: 0; }
+@media print { body { margin: 0; max-width: none; } :root { background: white; } pre,details { break-inside: avoid; } }

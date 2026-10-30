@@ -1,7 +1,8 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "Bullet.hpp"
 #include "Ship.hpp"
+#include <SFML/Graphics.hpp>
 
 class Game {
 public:
@@ -16,4 +17,5 @@ private:
 
   sf::RenderWindow m_window;
   Ship m_ship;
+  Bullet m_bullet{{200.f, 200.f}, {0.f, 0.f}};
 };

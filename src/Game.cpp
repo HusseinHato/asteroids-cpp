@@ -47,5 +47,6 @@ void Game::update(sf::Time dt) {
 void Game::render() {
   m_window.clear(sf::Color(15, 15, 25)); // Deep space dark blue/black
   m_window.draw(m_ship);
+  m_window.draw(m_bullet);
   m_window.display();
 }
